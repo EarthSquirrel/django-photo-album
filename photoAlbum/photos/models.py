@@ -9,7 +9,7 @@ class Photo(models.Model):
 
 
 class Animal(models.Model):
-    photo = models.ForeignKey(Photo, on_delete=models.RESTRICT)
+    photo = models.ForeignKey(Photo, on_delete=models.PROTECT)
     mb = models.IntegerField(default=0)
     sampson = models.IntegerField(default=0)
     kitty = models.IntegerField(default=0)
@@ -19,7 +19,7 @@ class Animal(models.Model):
 
 
 class Person(models.Model):
-    photo = models.ForeignKey(Photo, on_delete=models.RESTRICT)
+    photo = models.ForeignKey(Photo, on_delete=models.PROTECT)
     peggy = models.IntegerField(default=0)
     britney = models.IntegerField(default=0)
     barbara = models.IntegerField(default=0)
@@ -30,6 +30,6 @@ class Person(models.Model):
 
 
 class Places(models.Model):
-    photo = models.ForeignKey(Photo, on_delete=models.RESTRICT)
+    photo = models.ForeignKey(Photo, on_delete=models.PROTECT)
     bozeman = models.IntegerField(default=0)
     great_falls = models.IntegerField(default=0)
