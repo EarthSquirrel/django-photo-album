@@ -7,8 +7,14 @@ def hash_image(photo_path):
     img = Image.open(photo_path)
     md5 = hashlib.md5()
 
+    # Assume all other images are jpegs.....
+    if photo_path.split('.')[-1].lower() == 'png':
+        mime_type = 'png'
+    else:
+        mime_type = 'jpeg'
+
     with io.BytesIO() as memf:
-        img.save(memf, 'jpeg')
+        img.save(memf, mime_type)
         data = memf.getvalue()
         md5.update(data)
 
