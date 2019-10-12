@@ -1,7 +1,8 @@
 from django.views.generic.edit import FormView, CreateView
-from photos import forms, models
+from photos import forms, models, utils
 # import photos.forms as forms  # FileFieldForm
 from django.http import HttpResponse
+from django.db import transaction
 
 
 class AddAttributesView(FormView):
@@ -25,12 +26,16 @@ class UploadPhotoView(CreateView):
     # success_url = reverse_lazy('images:upload')
 
     def form_valid(self, form):
-        photo = form.save(commit=False)
-        # TODO: Get hash of photo
-        photo.photo_hash = 'TODO: Put hash function here'
-        # TODO: Make thumbnails of them
-        photo.save()
-        return HttpResponse('Yep I did something!!!')
+        result_str = 'failed'
+        with transaction.atomic():
+            photo = form.save(commit=False)
+            doc = photo.document
+            #doc.save(name=doc.name, content=doc)
+            photo.photo_hash = utils.hash_image(doc.path)
+            # TODO: Make thumbnails of photos
+            photo.save()
+            result_str = 'success upload {}'.format(photo.photo_hash)
+        return HttpResponse(result_str)
 
 
 # TODO: Figure out how to  upload multiple images at a time
