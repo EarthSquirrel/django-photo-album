@@ -15,7 +15,7 @@ class AddAttributesView(FormView):
         photo_id = self.kwargs['photo_id']
         photo = models.Photo.objects.get(id=photo_id)
         # TODO: WHy isn't it loadnig the image?
-        context['photo_url'] = photo.document.url
+        context['photo_url'] = photo.large_thumb.url
         return context
 
 
@@ -33,7 +33,10 @@ class UploadPhotoView(CreateView):
             # Save document to get hash
             doc.save(name=doc.name, content=doc)
             photo.photo_hash = utils.hash_image(doc.path)
-            # TODO: Make thumbnails of photos
+            # Create thumbnails of photots
+            photo.small_thumb.save(name=doc.name, content=doc)
+            photo.medium_thumb.save(name=doc.name, content=doc)
+            photo.large_thumb.save(name=doc.name, content=doc)
             photo.save()
             result_str = 'success upload {}'.format(photo.photo_hash)
         return HttpResponse(result_str)

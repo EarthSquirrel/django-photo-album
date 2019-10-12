@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load thumbnail %}
 {% block content %}
 <h1> Add Attributes to an Image </h1>	
 <img src="{{ photo_url }}" alt="An error occured when loading the image '{{ photo_url }}'"/>
@@ -14,7 +14,5 @@
 {% endblock %}
 
 {% block footer %}
-<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
 
-{{ form.media }}
 {% endblock %}
