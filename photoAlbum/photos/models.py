@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 
 
 class Photo(models.Model):
@@ -8,6 +9,13 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.photo_hash
+
+
+@receiver(models.signals.post_delete, sender=Photo)
+def post_delete_file(sender, instance, *args, **kwargs):
+    instance.document.delete(save=False)
+    # instance.medium_thumb.delete(save=False)
+    # instance.large_thumb.delete(save=False)
 
 
 class Animal(models.Model):
