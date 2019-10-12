@@ -1,9 +1,21 @@
 from django.views.generic.edit import FormView
-from photos.forms import FileFieldForm
+import photos.forms as forms  # FileFieldForm
+
+
+class AddAttributesView(FormView):
+    form_class = forms.AddAttributesForm
+    template_name = 'images/add_attribute_view.html'
+    success_url = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # TODO: Get the image to project
+        context['img_url'] = 'url to image'
+        return context
 
 
 class FileFieldView(FormView):
-    form_class = FileFieldForm
+    form_class = forms.FileFieldForm
     template_name = 'upload.html'  # Replace with your template.
     success_url = '...'  # Replace with your URL or reverse().
 
