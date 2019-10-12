@@ -6,13 +6,14 @@ from django.http import HttpResponse
 
 class AddAttributesView(FormView):
     form_class = forms.AddAttributesForm
-    template_name = 'photos/add_attribute_view.html'
+    template_name = 'photos/add_attributes_view.html'
     success_url = ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # TODO: Get the image to project
-        context['img_url'] = 'url to image'
+        photo_id = self.kwargs['photo_id']
+        context['img_url'] = 'url to imageA'
         return context
 
 
