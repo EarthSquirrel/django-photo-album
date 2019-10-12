@@ -1,10 +1,12 @@
-from django.views.generic.edit import FormView
-import photos.forms as forms  # FileFieldForm
+from django.views.generic.edit import FormView, CreateView
+from photos import forms, models
+# import photos.forms as forms  # FileFieldForm
+from django.http import HttpResponse
 
 
 class AddAttributesView(FormView):
     form_class = forms.AddAttributesForm
-    template_name = 'images/add_attribute_view.html'
+    template_name = 'photos/add_attribute_view.html'
     success_url = ''
 
     def get_context_data(self, **kwargs):
@@ -12,6 +14,20 @@ class AddAttributesView(FormView):
         # TODO: Get the image to project
         context['img_url'] = 'url to image'
         return context
+
+
+class UploadPhotoView(CreateView):
+    model = models.Photo
+    template_name = 'photos/upload_photo_view.html'
+    form_class = forms.UploadPhotoForm
+    # success_url = reverse_lazy('images:upload')
+
+    def form_valid(self, form):
+        photo = form.save(commit=False)
+        photo.photo_hash = 'TODO: Put hash function here'
+        # TODO: Make thumbnails of them
+        photo.save()
+        return HttpResponse('Yep I did something!!!')
 
 
 class FileFieldView(FormView):

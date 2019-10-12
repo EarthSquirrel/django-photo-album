@@ -1,4 +1,12 @@
 from django import forms
+from photos import models
+
+
+class UploadPhotoForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Photo
+        fields = ['document']
 
 
 class AddAttributesForm(forms.Form):
