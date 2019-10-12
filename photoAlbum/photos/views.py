@@ -11,9 +11,10 @@ class AddAttributesView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO: Get the image to project
         photo_id = self.kwargs['photo_id']
-        context['img_url'] = 'url to imageA'
+        photo = models.Photo.objects.get(id=photo_id)
+        # TODO: WHy isn't it loadnig the image?
+        context['photo_url'] = photo.document.url
         return context
 
 
@@ -25,12 +26,14 @@ class UploadPhotoView(CreateView):
 
     def form_valid(self, form):
         photo = form.save(commit=False)
+        # TODO: Get hash of photo
         photo.photo_hash = 'TODO: Put hash function here'
         # TODO: Make thumbnails of them
         photo.save()
         return HttpResponse('Yep I did something!!!')
 
 
+# TODO: Figure out how to  upload multiple images at a time
 class FileFieldView(FormView):
     form_class = forms.FileFieldForm
     template_name = 'upload.html'  # Replace with your template.
