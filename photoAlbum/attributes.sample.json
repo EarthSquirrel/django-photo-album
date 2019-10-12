@@ -1,0 +1,7 @@
+{
+    "Animal": ["Sampson", "MB"],
+    "Person": ["Peggy", "Barbara", "Carman"],
+    "Event": ["Birthday"],
+    "Location": ["Great Fall"],
+    "Classifier": ["Funny"]
+}

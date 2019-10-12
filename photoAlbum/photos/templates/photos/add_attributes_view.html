@@ -1,0 +1,20 @@
+{% load static %}
+
+{% block content %}
+<h1> Add Attributes to an Image </h1>	
+<img src="{{ photo_url }}" alt="An error occured when loading the image '{{ photo_url }}'"/>
+<form action = "" method="POST" enctype="multipart/form-data">
+    <div>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </div>
+</form>
+
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}
