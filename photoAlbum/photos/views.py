@@ -30,7 +30,8 @@ class UploadPhotoView(CreateView):
         with transaction.atomic():
             photo = form.save(commit=False)
             doc = photo.document
-            #doc.save(name=doc.name, content=doc)
+            # Save document to get hash
+            doc.save(name=doc.name, content=doc)
             photo.photo_hash = utils.hash_image(doc.path)
             # TODO: Make thumbnails of photos
             photo.save()
