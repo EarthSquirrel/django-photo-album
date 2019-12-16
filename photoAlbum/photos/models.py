@@ -9,9 +9,9 @@ class Photo(models.Model):
     document = models.ImageField()
     small_thumb = ThumbnailerImageField(resize_source=dict(size=(100, 100),
                                                            sharpen=True))
-    medium_thumb = ThumbnailerImageField(resize_source=dict(size=(200, 200),
+    medium_thumb = ThumbnailerImageField(resize_source=dict(size=(350, 350),
                                                             sharpen=True))
-    large_thumb = ThumbnailerImageField(resize_source=dict(size=(400, 400),
+    large_thumb = ThumbnailerImageField(resize_source=dict(size=(900, 900),
                                                            sharpen=True))
 
     def __str__(self):
