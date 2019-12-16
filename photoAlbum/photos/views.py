@@ -1,4 +1,5 @@
 from django.views.generic.edit import FormView, CreateView
+import django.views.generic as genViews
 from photos import forms, models, utils
 # import photos.forms as forms  # FileFieldForm
 from django.http import HttpResponse
@@ -16,6 +17,16 @@ class AddAttributesView(FormView):
         photo_id = self.kwargs['photo_id']
         photo = models.Photo.objects.get(id=photo_id)
         context['photo_url'] = photo.large_thumb.url
+        return context
+
+
+class PhotoDetailsView(genViews.DetailView):
+    model = models.Photo
+    template_name = 'photos/photo_details_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # import pdb; pdb.set_trace()
         return context
 
 
