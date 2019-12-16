@@ -16,4 +16,8 @@ The base template is:
 }
 ```
 
+## Website Layout
+TODO: Put layout of urls and what each page does
+
+
 
