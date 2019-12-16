@@ -48,7 +48,8 @@ class Location(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=500)
-
+    # TODO: Add in year with restrictions
+    # year = models.IntegerField()
     def __str__(self):
         return self.name
 
