@@ -3,6 +3,7 @@ from photos import forms, models, utils
 # import photos.forms as forms  # FileFieldForm
 from django.http import HttpResponse
 from django.db import transaction
+from dal import autocomplete as ac
 
 
 class AddAttributesView(FormView):
@@ -14,7 +15,6 @@ class AddAttributesView(FormView):
         context = super().get_context_data(**kwargs)
         photo_id = self.kwargs['photo_id']
         photo = models.Photo.objects.get(id=photo_id)
-        # TODO: WHy isn't it loadnig the image?
         context['photo_url'] = photo.large_thumb.url
         return context
 
@@ -58,3 +58,16 @@ class FileFieldView(FormView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+
+# ############### Autocompletes ####################
+class PersonAC(ac.Select2QuerySetView):
+    create_field = 'name'
+    model = models.Person
+    model_field_name = 'name'
+
+    def has_add_permission(self, request):
+        return True
+
+
+
