@@ -2,7 +2,8 @@ from django.views.generic.edit import FormView, CreateView
 import django.views.generic as genViews
 from photos import forms, models, utils
 # import photos.forms as forms  # FileFieldForm
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.db import transaction
 from dal import autocomplete as ac
 
@@ -34,7 +35,7 @@ class UploadPhotoView(CreateView):
     model = models.Photo
     template_name = 'photos/upload_photo_view.html'
     form_class = forms.UploadPhotoForm
-    # success_url = reverse_lazy('images:upload')
+    # success_url = reverse_lazy('images:photo_details')
 
     def form_valid(self, form):
         result_str = 'failed'
@@ -49,8 +50,9 @@ class UploadPhotoView(CreateView):
             photo.medium_thumb.save(name=doc.name, content=doc)
             photo.large_thumb.save(name=doc.name, content=doc)
             photo.save()
-            result_str = 'success upload {}'.format(photo.photo_hash)
-        return HttpResponse(result_str)
+            # result_str = 'success upload {}'.format(photo.photo_hash)
+        return HttpResponseRedirect(reverse('photos:photo_details', 
+                                    kwargs={'pk': int(photo.pk)}))
 
 
 # TODO: Figure out how to  upload multiple images at a time
