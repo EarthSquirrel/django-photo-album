@@ -1,5 +1,6 @@
 from django import forms
 from photos import models
+from dal import autocomplete as ac
 
 
 class UploadPhotoForm(forms.ModelForm):
@@ -10,7 +11,10 @@ class UploadPhotoForm(forms.ModelForm):
 
 
 class AddAttributesForm(forms.Form):
-    dummy_attribute = forms.CharField()
+    # dummy_attribute = forms.CharField()
+    people = forms.ModelMultipleChoiceField(queryset=models.Person.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/person-ac/'))
+
 
 
 class FileFieldForm(forms.Form):
