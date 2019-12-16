@@ -70,4 +70,29 @@ class PersonAC(ac.Select2QuerySetView):
         return True
 
 
+class AnimalAC(ac.Select2QuerySetView):
+    create_field = 'name'
+    model = models.Animal
+    model_field_name = 'name'
+
+    def has_add_permission(self, request):
+        return True
+
+
+class LocationAC(ac.Select2QuerySetView):
+    create_field = 'name'
+    model = models.Location
+    model_field_name = 'name'
+
+    def has_add_permission(self, request):
+        return True
+
+
+class EventAC(ac.Select2QuerySetView):
+    create_field = 'name'
+    model = models.Event
+    model_field_name = 'name'
+
+    def has_add_permission(self, request):
+        return True
 

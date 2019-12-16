@@ -15,6 +15,15 @@ class AddAttributesForm(forms.Form):
     people = forms.ModelMultipleChoiceField(queryset=models.Person.objects.all(),
         required=False, widget=ac.ModelSelect2Multiple(url='/photos/person-ac/'))
 
+    animals = forms.ModelMultipleChoiceField(queryset=models.Animal.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/animal-ac/'))
+
+    location = forms.ModelMultipleChoiceField(queryset=models.Location.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/location-ac/'))
+
+    events = forms.ModelMultipleChoiceField(queryset=models.Event.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/event-ac/'))
+
 
 
 class FileFieldForm(forms.Form):
