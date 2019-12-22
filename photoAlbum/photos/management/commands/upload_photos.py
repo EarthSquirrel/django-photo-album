@@ -4,8 +4,8 @@ from photos import models
 
 
 class Command(BaseCommand):
-    help = 'REQUIRES attributes.json. Will create models of each kind for \
-            in the json file'
+    help = 'REQUIRES upload folder with names of people inside. It uploads \'
+            the photos in each folder with the name as the owner.'
 
     def handle(self, *args, **options):
         for r,d,f in os.walk('upload'):
