@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
+from django.core.files.images import ImageFile
 import os
-from photos import models
+from photos import models, utils
 
 
 class Command(BaseCommand):
@@ -24,3 +25,15 @@ class Command(BaseCommand):
                     if pic.endswith('jpg') or pic.endswith('png') or pic.endswith('jpeg'):
                         # print("It's a picture!")
                         print('Uploading: {}'.format(ff))
+                        path = os.path.join(r, ff)
+                        # get image hash
+                        img_hash = utils.hash_image(path)
+                        photo = models.Photo.objects.create(photo_hash=img_hash, owner=person)
+                        photo.document = ImageFile(open(path, 'rb'))
+                        photo.document.name = ff
+                        doc = photo.document
+                        photo.small_thumb.save(name=doc.name, content=doc)
+                        photo.medium_thumb.save(name=doc.name, content=doc)
+                        photo.large_thumb.save(name=doc.name, content=doc)
+                        photo.save() 
+                        # TODO: Move picture to uploaded folder
