@@ -1,0 +1,15 @@
+{% extends 'photos/base.html' %}
+{% block content %}
+
+{% for photo in photo_list %}
+    <img src="{{ photo.medium_thumb.url }}" 
+        alt="An error occured when loading the image '{{ photo_url }}'"/>
+{% endfor %}
+
+{% endblock %}
+
+
+
+
+{# ******************** #}
+{# TODO: Add pagination #}

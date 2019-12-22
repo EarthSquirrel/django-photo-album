@@ -1,4 +1,5 @@
 from django.views.generic.edit import FormView, CreateView
+# “from django.views.generic.list import ListView
 import django.views.generic as genViews
 from photos import forms, models, utils
 # import photos.forms as forms  # FileFieldForm
@@ -35,7 +36,6 @@ class UploadPhotoView(CreateView):
     model = models.Photo
     template_name = 'photos/upload_photo_view.html'
     form_class = forms.UploadPhotoForm
-    # success_url = reverse_lazy('images:photo_details')
 
     def form_valid(self, form):
         result_str = 'failed'
@@ -71,6 +71,14 @@ class FileFieldView(FormView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+
+# TODO: class LargePhotoListView(genViews.ListView):
+class MediumPhotoListView(genViews.ListView):
+    model = models.Photo
+    context_object_name = 'photo_list'
+    template_name = 'photos/medium_photo_list.html'
+    paginate_by = 50
 
 
 # ############### Autocompletes ####################

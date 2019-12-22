@@ -9,6 +9,8 @@ urlpatterns = [
          name='add_attributes'),
     path('photo-details/<int:pk>/', views.PhotoDetailsView.as_view(),
          name='photo_details'),
+    path('all-photos-medium/', views.MediumPhotoListView.as_view(), 
+         name='photo_list'),
     # Autocomplete urls
     path('person-ac/', views.PersonAC.as_view(),
          name='person_ac'),
