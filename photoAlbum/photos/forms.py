@@ -7,8 +7,11 @@ class UploadPhotoForm(forms.ModelForm):
 
     class Meta:
         model = models.Photo
-        fields = ['document']
-
+        fields = ['document', 'owner']
+        widgets = {
+            'owner':
+            ac.ModelSelect2(url='/photos/person-ac/') 
+        }
 
 class AddAttributesForm(forms.Form):
     # dummy_attribute = forms.CharField()
