@@ -45,3 +45,4 @@ class Command(BaseCommand):
 
                         # move photo to uploaded folder
                         os.rename(path, os.path.join(uploaded, ff))
+                break
