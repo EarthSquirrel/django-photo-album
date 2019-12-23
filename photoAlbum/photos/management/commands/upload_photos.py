@@ -18,7 +18,13 @@ class Command(BaseCommand):
             person = models.Person.objects.filter(name__icontains=p)[0]
             print(person)
             
-            for r,d,f in os.walk(os.path.join('upload', p)):
+            person_path = os.path.join('upload', p)
+            uploaded = os.path.join(person_path, 'uploaded')
+
+            if not os.path.exists(uploaded):
+                os.mkdir(uploaded)
+
+            for r,d,f in os.walk(person_path):
                 print('files: ', f)
                 for ff in f:
                     pic = ff.lower()
@@ -36,4 +42,6 @@ class Command(BaseCommand):
                         photo.medium_thumb.save(name=doc.name, content=doc)
                         photo.large_thumb.save(name=doc.name, content=doc)
                         photo.save() 
-                        # TODO: Move picture to uploaded folder
+
+                        # move photo to uploaded folder
+                        os.rename(path, os.path.join(uploaded, ff))
