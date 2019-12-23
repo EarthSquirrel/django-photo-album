@@ -11,6 +11,9 @@ urlpatterns = [
          name='photo_details'),
     path('all-photos-medium/', views.MediumPhotoListView.as_view(), 
          name='medium_photo_list'),
+    path('search/', views.SearchView.as_view(), name='search'),
+    path('search-results/', views.SearchResultsView.as_view(),
+         name='search_results'),
     # Autocomplete urls
     path('person-ac/', views.PersonAC.as_view(),
          name='person_ac'),

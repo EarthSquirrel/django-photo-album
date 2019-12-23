@@ -29,6 +29,11 @@ class AddAttributesForm(forms.Form):
 
 
 
+class SearchForm(forms.Form):
+    owner = forms.ModelMultipleChoiceField(queryset=models.Person.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/person-ac/'))
+
+
 class FileFieldForm(forms.Form):
     file_field = forms.FileField(widget=forms.ClearableFileInput(
                                  attrs={'multiple': True}))

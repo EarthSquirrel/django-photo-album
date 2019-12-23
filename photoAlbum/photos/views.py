@@ -1,4 +1,5 @@
 from django.views.generic.edit import FormView, CreateView
+from django.utils.datastructures import MultiValueDictKeyError
 # “from django.views.generic.list import ListView
 import django.views.generic as genViews
 from photos import forms, models, utils
@@ -53,6 +54,31 @@ class UploadPhotoView(CreateView):
             # result_str = 'success upload {}'.format(photo.photo_hash)
         return HttpResponseRedirect(reverse('photos:photo_details', 
                                     kwargs={'pk': int(photo.pk)}))
+
+
+class SearchView(FormView):
+    form_class = forms.SearchForm
+    template_name = 'photos/search_view.html'
+    success_url = ''
+
+
+class SearchResultsView(genViews.ListView):
+    model = models.Photo
+    context_object_name = 'photo_list'
+    template_name = 'photos/medium_photo_list.html'
+    paginate_by = 50
+
+    def get_queryset(self):
+        qs = models.Photo.objects.all()
+        try:
+            i = self.request.GET.getlist('owner')
+            orig = qs
+            for ii in i:
+                qs = qs | orig.filter(owner=ii)
+        except MultiValueDictKeyError:
+            pass        
+        # if self.request.GET.getList('owner')
+        return qs
 
 
 # TODO: Figure out how to  upload multiple images at a time
