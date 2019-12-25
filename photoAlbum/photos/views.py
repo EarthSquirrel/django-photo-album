@@ -29,6 +29,8 @@ class PhotoDetailsView(genViews.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        photo = context['object']
+        context['attributes'] = utils.get_html_attributes(photo)
         # import pdb; pdb.set_trace()
         return context
 
