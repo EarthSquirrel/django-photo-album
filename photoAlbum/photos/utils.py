@@ -21,3 +21,17 @@ def hash_image(photo_path):
     hex_value = md5.hexdigest()
     print(hex_value)
     return hex_value
+
+
+def get_html_attributes(photo, attributes=[]):
+    at_dict = {
+        'owner': photo.owner,
+        'event': 'some event',
+        'uploaded': photo.date,
+    }
+    if len(attributes) == 0:
+        attributes = ['owner', 'event', 'uploaded']
+    li = []
+    for a in attributes:
+        li.append(['{}:'.format(a.capitalize()), at_dict[a]])
+    return li
