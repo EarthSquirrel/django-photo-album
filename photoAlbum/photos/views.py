@@ -78,6 +78,10 @@ class SearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass        
         # if self.request.GET.getList('owner')
+        
+        if len(self.request.GET) == 0:
+            qs = orig
+
         return qs
 
 
