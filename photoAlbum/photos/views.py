@@ -69,10 +69,10 @@ class SearchResultsView(genViews.ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        qs = models.Photo.objects.all()
+        orig = models.Photo.objects.all()
+        qs = models.Photo.objects.none()
         try:
             i = self.request.GET.getlist('owner')
-            orig = qs
             for ii in i:
                 qs = qs | orig.filter(owner=ii)
         except MultiValueDictKeyError:
