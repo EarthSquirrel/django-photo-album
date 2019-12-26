@@ -23,7 +23,7 @@ class AddAttributesView(FormView):
         if len(events) > 0:
             for i in events:
                 models.EventTag.objects.get_or_create(photo=photo,
-                                                      event=i)
+                                                      atr=i)
         
         # import pdb; pdb.set_trace()
         return HttpResponseRedirect(reverse('photos:photo_details', 
@@ -101,7 +101,7 @@ class SearchResultsView(genViews.ListView):
             for ii in i:
                 # get photo from Event and EventTag
                 e = models.Event.objects.get(id=int(ii))
-                et = models.EventTag.objects.filter(event = e)
+                et = models.EventTag.objects.filter(atr=e)
                 # add each photo to a qs
                 for t in et:
                     pq |= models.Photo.objects.filter(id=t.photo.pk)

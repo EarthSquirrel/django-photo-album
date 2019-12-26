@@ -72,10 +72,11 @@ def owner_directory_path(instance, filename):
 
 
 class Photo(models.Model):
-    photo_hash = models.CharField(max_length=500)
-    date = models.DateField(("Date"), auto_now_add=True)
+    photo_hash = models.CharField(max_length=500, unique=True)
+    upload_date = models.DateField(("Date"), auto_now_add=True)
     owner = models.ForeignKey(Person, on_delete=models.PROTECT)
     document = models.ImageField(upload_to=owner_directory_path)
+    # TODO: Create Backup document stored in a separate location
     small_thumb = ThumbnailerImageField(upload_to=thumb_directory_path,
                                         resize_source=dict(size=(100, 100),
                                                            sharpen=True))
@@ -111,4 +112,4 @@ def post_delete_file(sender, instance, *args, **kwargs):
 
 class EventTag(models.Model):
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.PROTECT)
+    atr = models.ForeignKey(Event, on_delete=models.PROTECT)

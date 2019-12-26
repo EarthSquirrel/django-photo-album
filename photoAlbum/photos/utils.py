@@ -47,7 +47,7 @@ def get_attribute(model, photo):
     qs = model.objects.filter(photo=photo)
     li = []
     for q in qs:
-        li.append(str(q.event))
+        li.append(str(q.atr))
 
     s = ', '.join(li)
     if len(li) == 0:
