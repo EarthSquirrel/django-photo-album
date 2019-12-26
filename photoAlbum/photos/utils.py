@@ -1,7 +1,9 @@
 import io
 import hashlib
 from PIL import Image
+from PIL.ExifTags import TAGS
 from photos import models
+import datetime as dt
 
 
 def hash_image(photo_path):
@@ -22,6 +24,23 @@ def hash_image(photo_path):
     hex_value = md5.hexdigest()
     # print(hex_value)
     return hex_value
+
+
+def get_DateTimeOriginal(path):
+    img = Image.open(path)
+    orig = ''
+    # Get the DateTimeOriginal
+    for tag, value in img._getexif().items():
+        key = TAGS.get(tag, tag)
+        if key == 'DateTimeOriginal':
+            orig = value
+            break
+    
+    # return orig as string if no stamp
+    if orig != '':
+        return orig  # TODO: Convert to datetime object
+    else:
+        return ''
 
 
 def get_attribute(model, photo):
