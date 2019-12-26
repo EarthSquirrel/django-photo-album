@@ -64,15 +64,7 @@ class Photo(models.Model):
     large_thumb = ThumbnailerImageField(upload_to=thumb_directory_path,
                                         resize_source=dict(size=(900, 900),
                                                            sharpen=True))
-    '''
-    small_thumb = ThumbnailerImageField(resize_source=dict(size=(100, 100),
-                                                           sharpen=True))
-    medium_thumb = ThumbnailerImageField(resize_source=dict(size=(350, 350),
-                                                            sharpen=True))
-    large_thumb = ThumbnailerImageField(resize_source=dict(size=(900, 900),
-                                                           sharpen=True))
-
-    '''
+    
     def __str__(self):
         return self.photo_hash
 
@@ -84,3 +76,7 @@ def post_delete_file(sender, instance, *args, **kwargs):
     instance.medium_thumb.delete(save=False)
     instance.large_thumb.delete(save=False)
 
+
+class EventTag(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.PROTECT)
+    event = models.ForeignKey(Event, on_delete=models.PROTECT)
