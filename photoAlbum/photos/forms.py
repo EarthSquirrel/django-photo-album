@@ -33,6 +33,9 @@ class SearchForm(forms.Form):
     owner = forms.ModelMultipleChoiceField(queryset=models.Person.objects.all(),
         required=False, widget=ac.ModelSelect2Multiple(url='/photos/person-ac/'))
 
+    events = forms.ModelMultipleChoiceField(queryset=models.Event.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/event-ac/'))
+
 
 class FileFieldForm(forms.Form):
     file_field = forms.FileField(widget=forms.ClearableFileInput(

@@ -93,6 +93,28 @@ class SearchResultsView(genViews.ListView):
                 qs = qs | orig.filter(owner=ii)
         except MultiValueDictKeyError:
             pass        
+        
+        try:
+            i = self.request.GET.getlist('events')
+            # get empty and full qs for events
+            eq = models.EventTag.objects.all()
+            fq = models.EventTag.objects.none()
+            # add EventTags to empty qs
+            pq = models.Photo.objects.none()
+            for ii in i:
+                e = models.Event.objects.get(id=int(ii))
+                et = models.EventTag.objects.filter(event = e)
+                # add each photo to a qs
+                for t in et:
+                    pq |= models.Photo.objects.filter(id=t.photo.pk)
+
+            # Union existing qs with events qs to get new qs
+            qs = qs.union(pq)
+        
+
+            # import pdb; pdb.set_trace()
+        except MultiValueDictKeyError:
+            pass        
         # if self.request.GET.getList('owner')
         
         if len(self.request.GET) == 0:
