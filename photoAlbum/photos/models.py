@@ -2,17 +2,20 @@ from django.db import models
 from django.dispatch import receiver
 from easy_thumbnails.fields import ThumbnailerImageField
 import os
-
+import shutil
 
 
 class Animal(models.Model):
     name = models.CharField(max_length=500)
 
+    def save(self, *args, **kwargs):
+        os.mkdir('sorting/Animal/{}'.format(self.name))
+        super(Animal, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
-# TODO: Add folder to upload folder when a person is added
 class Person(models.Model):
     name = models.CharField(max_length=500)
 
@@ -28,24 +31,40 @@ class Person(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=500)
 
+    def save(self, *args, **kwargs):
+        os.mkdir('sorting/Location/{}'.format(self.name))
+        super(Location, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class Event(models.Model):
     name = models.CharField(max_length=500)
-    # TODO: Add in year with restrictions
-    # year = models.IntegerField()
+
+    def save(self, *args, **kwargs):
+        os.mkdir('sorting/Event/{}'.format(self.name))
+        super(Event, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        shutil.rmtree('sorting/Event/{}'.format(self.name))           
+        super(Event, self).delete(*args, **kwargs)
+    
     def __str__(self):
         return self.name
-
+    
 
 # use for other things that aren't included (ex: memes)
 class Classifier(models.Model):
     name = models.CharField(max_length=500)
 
+    def save(self, *args, **kwargs):
+        os.mkdir('sorting/Classifier/{}'.format(self.name))
+        super(Classifier, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
 def thumb_directory_path(instance, filename):
     return 'thumbs/{}'.format(filename)
