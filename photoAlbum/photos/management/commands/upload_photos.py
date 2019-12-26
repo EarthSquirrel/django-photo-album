@@ -44,6 +44,14 @@ class Command(BaseCommand):
                             photo.document = ImageFile(open(path, 'rb'))
                             photo.document.name = ff
                             doc = photo.document
+                            create_date = utils.get_DateTimeOriginal(path)
+                            create_date = ''
+                            if create_date != '':
+                                photo.create_date = create_date
+                                photo.metadata = True
+                            # create name with owner in it
+                            name = '{}/{}'.format(str(person), doc.name)
+                            photo.backup_path = utils.save_backup(name, path)
                             photo.small_thumb.save(name=doc.name, content=doc)
                             photo.medium_thumb.save(name=doc.name, content=doc)
                             photo.large_thumb.save(name=doc.name, content=doc)
