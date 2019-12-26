@@ -3,7 +3,7 @@ import hashlib
 from PIL import Image
 from PIL.ExifTags import TAGS
 from photos import models
-import datetime as dt
+from datetime import datetime
 
 
 def hash_image(photo_path):
@@ -38,7 +38,13 @@ def get_DateTimeOriginal(path):
     
     # return orig as string if no stamp
     if orig != '':
-        return orig  # TODO: Convert to datetime object
+        # Making massive assumptions on format
+        # Year:month:day hr:min:sec
+        date, time = orig.split(' ')
+        year,month,day = list(map(int, date.split(':')))
+        hour,minute,sec = list(map(int, time.split(':')))
+
+        return datetime(year, month, day, hour, minute, sec, 0)
     else:
         return ''
 
@@ -51,6 +57,7 @@ def get_attribute(model, photo):
 
     s = ', '.join(li)
     if len(li) == 0:
+        # TODO: REturn '' and don't print if nothing here
         s = 'No events'
     return s
 
