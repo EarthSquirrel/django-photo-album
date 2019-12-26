@@ -49,7 +49,8 @@ class Command(BaseCommand):
                             photo.large_thumb.save(name=doc.name, content=doc)
                             photo.save()
                         except IntegrityError:
-                            print('**FAILED: duplicates id {}'.format('**TODO insert id here**'))
+                            p = models.Photo.objects.get(photo_hash=img_hash)
+                            print('**FAILED: duplicates id {}'.format(p.id))
 
                         # move photo to uploaded folder
                         os.rename(path, os.path.join(uploaded, ff))
