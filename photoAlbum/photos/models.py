@@ -18,6 +18,7 @@ class Person(models.Model):
 
     def save(self, *args, **kwargs):
         os.mkdir('upload/{}'.format(self.name))
+        os.mkdir('sorting/Person/{}'.format(self.name))
         super(Person, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -82,5 +83,5 @@ def post_delete_file(sender, instance, *args, **kwargs):
 
 
 class EventTag(models.Model):
-    photo = models.ForeignKey(Photo, on_delete=models.PROTECT)
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.PROTECT)
