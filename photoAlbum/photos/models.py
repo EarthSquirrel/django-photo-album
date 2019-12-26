@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from easy_thumbnails.fields import ThumbnailerImageField
 import os
 import shutil
+from django.conf import settings
 
 
 class Animal(models.Model):
@@ -46,10 +47,6 @@ class Event(models.Model):
         os.mkdir('sorting/Event/{}'.format(self.name))
         super(Event, self).save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-        shutil.rmtree('sorting/Event/{}'.format(self.name))           
-        super(Event, self).delete(*args, **kwargs)
-    
     def __str__(self):
         return self.name
     
@@ -64,7 +61,7 @@ class Classifier(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 
 def thumb_directory_path(instance, filename):
     return 'thumbs/{}'.format(filename)
@@ -95,7 +92,18 @@ class Photo(models.Model):
 
 @receiver(models.signals.post_delete, sender=Photo)
 def post_delete_file(sender, instance, *args, **kwargs):
-    instance.document.delete(save=False)
+    # check if owner folder exists
+    deleted = '{}/deleted'.format(settings.MEDIA_ROOT)
+    if not os.path.exists(deleted):
+        os.mkdir(deleted)
+    # check if owner exists
+    owner = '{}/{}'.format(deleted, instance.owner)
+    if not os.path.exists(owner):
+        os.mkdir(owner)
+    name = instance.document.name
+    # Move deleted file
+    os.rename(instance.document.path, '{}/{}'.format(deleted, name))
+    # instance.document.delete(save=False)
     instance.small_thumb.delete(save=False)
     instance.medium_thumb.delete(save=False)
     instance.large_thumb.delete(save=False)
