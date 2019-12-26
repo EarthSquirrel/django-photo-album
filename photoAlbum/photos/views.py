@@ -17,11 +17,13 @@ class AddAttributesView(FormView):
     
     def form_valid(self, form):
         photo_id = self.kwargs['photo_id']
+        photo = models.Photo.objects.get(id=photo_id)
         data = form.cleaned_data
         events = data['events']
         if len(events) > 0:
             for i in events:
-                print(i)
+                models.EventTag.objects.get_or_create(photo=photo,
+                                                      event=i)
         
         # import pdb; pdb.set_trace()
         return HttpResponseRedirect(reverse('photos:photo_details', 
