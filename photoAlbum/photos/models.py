@@ -71,12 +71,20 @@ def owner_directory_path(instance, filename):
     return '{}/{}'.format(str(instance.owner), filename)
 
 
+def backup_directory_path(instance, filename):
+    return '{}/{}/{}'.format(settings.BACKUP_ROOT, str(instance.owner),
+                             filename)
+
+
 class Photo(models.Model):
     photo_hash = models.CharField(max_length=500, unique=True)
     upload_date = models.DateField(("Date"), auto_now_add=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    metadata = models.BooleanField(default=False)
     owner = models.ForeignKey(Person, on_delete=models.PROTECT)
     document = models.ImageField(upload_to=owner_directory_path)
-    # TODO: Create Backup document stored in a separate location
+    # Backup the photo to two locations, this one won't be deleted
+    backup = models.ImageField(upload_to=backup_directory_path)
     small_thumb = ThumbnailerImageField(upload_to=thumb_directory_path,
                                         resize_source=dict(size=(100, 100),
                                                            sharpen=True))
@@ -104,6 +112,10 @@ def post_delete_file(sender, instance, *args, **kwargs):
     name = instance.document.name
     # Move deleted file
     os.rename(instance.document.path, '{}/{}'.format(deleted, name))
+    
+    # show in backup file that the original has been deleted
+    os.rename(instance.backup.path, 'deleted_{}'.format(instance.backup.path))
+    
     # instance.document.delete(save=False)
     instance.small_thumb.delete(save=False)
     instance.medium_thumb.delete(save=False)
