@@ -65,6 +65,9 @@ class UploadPhotoView(CreateView):
             create_date = utils.get_DateTimeOriginal(doc.path)
             if create_date != '':
                 photo.create_date = create_date
+                photo.metadata = True
+            # Do backup things
+            photo.backup_path = utils.save_backup(doc.name, doc.path)
             # Create thumbnails of photots
             photo.small_thumb.save(name=doc.name, content=doc)
             photo.medium_thumb.save(name=doc.name, content=doc)

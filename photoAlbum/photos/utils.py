@@ -4,6 +4,8 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from photos import models
 from datetime import datetime
+import os
+from django.conf import settings
 
 
 def hash_image(photo_path):
@@ -53,6 +55,20 @@ def get_DateTimeOriginal(path):
         return ''
 
 
+def save_backup(name, orig_path):
+    # Get the backup location stuff
+    owner = name.split('/')[0]
+    save_dir = os.path.join(settings.BACKUP_ROOT, owner)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
+    # Get an image to save
+    img = Image.open(orig_path)
+    backup_path = os.path.join(settings.BACKUP_ROOT, name)
+    img.save(backup_path)
+    return backup_path
+
+
 def get_attribute(model, photo):
     qs = model.objects.filter(photo=photo)
     li = []
@@ -66,10 +82,15 @@ def get_attribute(model, photo):
 
 
 def get_html_attributes(photo, attributes=[]):
+    # get created date if exists
+    if photo.metadata:
+        create_date = photo.create_date
+    else:
+        create_date = "Unknown"
     at_dict = {
         'owner': photo.owner,
         'event': get_attribute(models.EventTag, photo),
-        'created': photo.create_date,
+        'created': create_date,
         'uploaded': photo.upload_date,
     }
     if len(attributes) == 0:

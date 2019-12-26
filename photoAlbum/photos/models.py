@@ -84,7 +84,7 @@ class Photo(models.Model):
     owner = models.ForeignKey(Person, on_delete=models.PROTECT)
     document = models.ImageField(upload_to=owner_directory_path)
     # Backup the photo to two locations, this one won't be deleted
-    backup = models.ImageField(upload_to=backup_directory_path)
+    backup_path = models.TextField()
     small_thumb = ThumbnailerImageField(upload_to=thumb_directory_path,
                                         resize_source=dict(size=(100, 100),
                                                            sharpen=True))
@@ -110,8 +110,7 @@ def post_delete_file(sender, instance, *args, **kwargs):
     if not os.path.exists(owner):
         os.mkdir(owner)
     name = instance.document.name
-    # Move deleted file
-    os.rename(instance.document.path, '{}/{}'.format(deleted, name))
+    # TODO: REname deleted file in backups
     
     # show in backup file that the original has been deleted
     os.rename(instance.backup.path, 'deleted_{}'.format(instance.backup.path))
