@@ -62,6 +62,9 @@ class UploadPhotoView(CreateView):
             # Save document to get hash
             doc.save(name=doc.name, content=doc)
             photo.photo_hash = utils.hash_image(doc.path)
+            create_date = utils.get_DateTimeOriginal(doc.path)
+            if create_date != '':
+                photo.create_date = create_date
             # Create thumbnails of photots
             photo.small_thumb.save(name=doc.name, content=doc)
             photo.medium_thumb.save(name=doc.name, content=doc)
