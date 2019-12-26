@@ -30,6 +30,10 @@ def get_DateTimeOriginal(path):
     img = Image.open(path)
     orig = ''
     # Get the DateTimeOriginal
+    # check there is metadata
+    md = img._getexif()
+    if not isinstance(md, dict):
+        return ''
     for tag, value in img._getexif().items():
         key = TAGS.get(tag, tag)
         if key == 'DateTimeOriginal':
@@ -66,10 +70,11 @@ def get_html_attributes(photo, attributes=[]):
     at_dict = {
         'owner': photo.owner,
         'event': get_attribute(models.EventTag, photo),
-        'uploaded': photo.date,
+        'created': photo.create_date,
+        'uploaded': photo.upload_date,
     }
     if len(attributes) == 0:
-        attributes = ['owner', 'event', 'uploaded']
+        attributes = ['owner', 'event', 'created', 'uploaded']
     li = []
     for a in attributes:
         li.append(['{}:'.format(a.capitalize()), at_dict[a]])
