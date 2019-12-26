@@ -20,7 +20,7 @@ def hash_image(photo_path):
         md5.update(data)
 
     hex_value = md5.hexdigest()
-    print(hex_value)
+    # print(hex_value)
     return hex_value
 
 
