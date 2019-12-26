@@ -1,7 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 from easy_thumbnails.fields import ThumbnailerImageField
-
+import os
 
 
 
@@ -15,6 +15,10 @@ class Animal(models.Model):
 # TODO: Add folder to upload folder when a person is added
 class Person(models.Model):
     name = models.CharField(max_length=500)
+
+    def save(self, *args, **kwargs):
+        os.mkdir('upload/{}'.format(self.name))
+        super(Person, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
