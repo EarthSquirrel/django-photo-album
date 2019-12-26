@@ -13,8 +13,20 @@ from dal import autocomplete as ac
 class AddAttributesView(FormView):
     form_class = forms.AddAttributesForm
     template_name = 'photos/add_attributes_view.html'
-    success_url = ''
 
+    
+    def form_valid(self, form):
+        photo_id = self.kwargs['photo_id']
+        data = form.cleaned_data
+        events = data['events']
+        if len(events) > 0:
+            for i in events:
+                print(i)
+        
+        # import pdb; pdb.set_trace()
+        return HttpResponseRedirect(reverse('photos:photo_details', 
+                                            args=[photo_id])) 
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         photo_id = self.kwargs['photo_id']
