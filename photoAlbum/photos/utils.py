@@ -1,6 +1,7 @@
 import io
 import hashlib
 from PIL import Image
+from photos import models
 
 
 def hash_image(photo_path):
@@ -23,10 +24,22 @@ def hash_image(photo_path):
     return hex_value
 
 
+def get_attribute(model, photo):
+    qs = model.objects.filter(photo=photo)
+    li = []
+    for q in qs:
+        li.append(str(q.event))
+
+    s = ', '.join(li)
+    if len(li) == 0:
+        s = 'No events'
+    return s
+
+
 def get_html_attributes(photo, attributes=[]):
     at_dict = {
         'owner': photo.owner,
-        'event': 'some event',
+        'event': get_attribute(models.EventTag, photo),
         'uploaded': photo.date,
     }
     if len(attributes) == 0:
