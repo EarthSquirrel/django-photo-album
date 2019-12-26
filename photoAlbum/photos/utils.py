@@ -61,8 +61,7 @@ def get_attribute(model, photo):
 
     s = ', '.join(li)
     if len(li) == 0:
-        # TODO: REturn '' and don't print if nothing here
-        s = 'No events'
+        s = ''
     return s
 
 
@@ -77,5 +76,7 @@ def get_html_attributes(photo, attributes=[]):
         attributes = ['owner', 'event', 'created', 'uploaded']
     li = []
     for a in attributes:
-        li.append(['{}:'.format(a.capitalize()), at_dict[a]])
+        if at_dict[a] != '':
+            li.append(['{}:'.format(a.capitalize()), 
+                                    at_dict[a]])
     return li
