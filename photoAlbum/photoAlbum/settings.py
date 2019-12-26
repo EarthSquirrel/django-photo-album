@@ -127,3 +127,6 @@ STATIC_URL = '/static/'
 # Path for storing files
 MEDIA_ROOT = config('MEDIA_ROOT')
 MEDIA_URL = '/files/'
+
+# Location for backup files
+BACKUP_ROOT = config('BACKUP_ROOT')
