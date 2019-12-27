@@ -45,6 +45,20 @@ class Device(models.Model):
         return self.name
 
 
+class Person(models.Model):
+    name = models.CharField(max_length=500, unique=True)
+
+    def save(self, *args, **kwargs):
+        path = 'upload/{}'.format(self.name)
+        os.mkdir(path)
+        for d in Device.objects.all():
+            os.mkdir(os.path.join(path, str(d)))
+        os.mkdir('sorting/Person/{}'.format(self.name))
+        super(Person, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 
 
 class Location(models.Model):
