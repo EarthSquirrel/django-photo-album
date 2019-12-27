@@ -7,7 +7,7 @@ from django.conf import settings
 
 
 class Animal(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
         os.mkdir('sorting/Animal/{}'.format(self.name))
@@ -18,7 +18,7 @@ class Animal(models.Model):
 
 
 class Person(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
         os.mkdir('upload/{}'.format(self.name))
@@ -30,7 +30,7 @@ class Person(models.Model):
     
 
 class Device(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
         for r,d,f in os.walk('upload'):
@@ -48,7 +48,7 @@ class Device(models.Model):
 
 
 class Location(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
         os.mkdir('sorting/Location/{}'.format(self.name))
@@ -59,7 +59,7 @@ class Location(models.Model):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
         os.mkdir('sorting/Event/{}'.format(self.name))
@@ -71,7 +71,7 @@ class Event(models.Model):
 
 # use for other things that aren't included (ex: memes)
 class Classifier(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
         os.mkdir('sorting/Classifier/{}'.format(self.name))
