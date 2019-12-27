@@ -38,3 +38,10 @@ class Command(BaseCommand):
                     print('Created classifier: {}'.format(p))
             except KeyError:
                 print('attributes.json key error. Missing Classifier')
+            print('\nCreating Devices!')
+            try:
+                for p in attribs['devices']:
+                    models.Device.objects.get_or_create(name=p)
+                    print('Created device: {}'.format(p))
+            except KeyError:
+                print('attributes.json key error. Missing Device')
