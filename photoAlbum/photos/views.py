@@ -159,6 +159,15 @@ class PersonAC(ac.Select2QuerySetView):
         return True
 
 
+class DeviceAC(ac.Select2QuerySetView):
+    create_field = 'name'
+    model = models.Device
+    model_field_name = 'name'
+
+    def has_add_permission(self, request):
+        return True
+
+
 class AnimalAC(ac.Select2QuerySetView):
     create_field = 'name'
     model = models.Animal

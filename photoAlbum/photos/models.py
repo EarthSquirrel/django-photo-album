@@ -27,6 +27,24 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Device(models.Model):
+    name = models.CharField(max_length=500)
+
+    def save(self, *args, **kwargs):
+        for r,d,f in os.walk('upload'):
+            for dd in d:
+                base = os.path.join(r, dd)
+                full = os.path.join(base, self.name)
+                os.mkdir(full)
+            break
+        super(Device, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 
 
 class Location(models.Model):
@@ -61,7 +79,7 @@ class Classifier(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 def thumb_directory_path(instance, filename):
     return 'thumbs/{}'.format(filename)
@@ -77,14 +95,19 @@ def backup_directory_path(instance, filename):
 
 
 class Photo(models.Model):
+    # Hash to make sure only uploaded once
     photo_hash = models.CharField(max_length=500, unique=True)
+    # Keep track of dates
     upload_date = models.DateField(("Date"), auto_now_add=True)
     create_date = models.DateTimeField(auto_now_add=True)
     metadata = models.BooleanField(default=False)
+    # Other metadata
     owner = models.ForeignKey(Person, on_delete=models.PROTECT)
-    document = models.ImageField(upload_to=owner_directory_path)
-    # Backup the photo to two locations, this one won't be deleted
+    device = models.ForeignKey(Device, on_delete=models.PROTECT)
+    # Path to the backup location, hope this doesn't fail
     backup_path = models.TextField()
+    # Keep all the photo files
+    document = models.ImageField(upload_to=owner_directory_path)
     small_thumb = ThumbnailerImageField(upload_to=thumb_directory_path,
                                         resize_source=dict(size=(100, 100),
                                                            sharpen=True))

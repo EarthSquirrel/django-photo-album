@@ -15,6 +15,8 @@ urlpatterns = [
     path('search-results/', views.SearchResultsView.as_view(),
          name='search_results'),
     # Autocomplete urls
+    path('device-ac/', views.DeviceAC.as_view(),
+         name='device_ac'),
     path('person-ac/', views.PersonAC.as_view(),
          name='person_ac'),
     path('animal-ac/', views.AnimalAC.as_view(),
