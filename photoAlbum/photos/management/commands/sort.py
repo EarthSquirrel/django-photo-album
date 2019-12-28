@@ -76,7 +76,7 @@ class Command(BaseCommand):
                                 print('{} not in database'.format(ff))
                                 if not os.path.exists(entry_failed):
                                     os.makedirs(entry_failed)
-                                os.rename(path, os.path.join(entry_failed, ff))
+                                # os.rename(path, os.path.join(entry_failed, ff))
                         if total_tagged > 0:
                             print('\tAdded {} photos'.format(total_tagged))
                 break
