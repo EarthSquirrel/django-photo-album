@@ -5,11 +5,17 @@ from PIL.ExifTags import TAGS
 from photos import models
 from datetime import datetime
 import os
+import sys
 from django.conf import settings
 
 
 def hash_image(photo_path):
-    img = Image.open(photo_path)
+    try:
+        img = Image.open(photo_path)
+    except:
+        print('Error when taking hash of {}'.format(photo_path))
+        print(sys.exc_info()[0])
+        return ''
     md5 = hashlib.md5()
 
     # Assume all other images are jpegs.....
