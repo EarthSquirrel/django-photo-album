@@ -53,7 +53,11 @@ def get_DateTimeOriginal(path):
         # Making massive assumptions on format
         # Year:month:day hr:min:sec
         date, time = orig.split(' ')
-        year,month,day = list(map(int, date.split(':')))
+        if ':' in date:
+            year,month,day = list(map(int, date.split(':')))
+        elif '-' in date:
+            year,month,day = list(map(int, date.split('-')))
+            
         hour,minute,sec = list(map(int, time.split(':')))
 
         return datetime(year, month, day, hour, minute, sec, 0)
