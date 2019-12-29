@@ -10,24 +10,14 @@ class Animal(models.Model):
     name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
-        os.mkdir('sorting/Animal/{}'.format(self.name))
+        path = 'sorting/Animal/{}'.format(self.name)
+        if not os.path.exists(path):
+            os.mkdir(path)
         super(Animal, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
-
-class Person(models.Model):
-    name = models.CharField(max_length=500, unique=True)
-
-    def save(self, *args, **kwargs):
-        os.mkdir('upload/{}'.format(self.name))
-        os.mkdir('sorting/Person/{}'.format(self.name))
-        super(Person, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-    
 
 class Device(models.Model):
     name = models.CharField(max_length=500, unique=True)
@@ -50,10 +40,13 @@ class Person(models.Model):
 
     def save(self, *args, **kwargs):
         path = 'upload/{}'.format(self.name)
-        os.mkdir(path)
+        if not os.path.exists(path):
+            os.mkdir(path)
         for d in Device.objects.all():
             os.mkdir(os.path.join(path, str(d)))
-        os.mkdir('sorting/Person/{}'.format(self.name))
+        path = 'sorting/Person/{}'.format(self.name)
+        if not os.path.exists(path):
+            os.mkdir(path)
         super(Person, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -65,7 +58,9 @@ class Location(models.Model):
     name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
-        os.mkdir('sorting/Location/{}'.format(self.name))
+        path = 'sorting/Location/{}'.format(self.name)
+        if not os.path.exists(path):
+            os.mkdir(path)
         super(Location, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -76,7 +71,9 @@ class Event(models.Model):
     name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
-        os.mkdir('sorting/Event/{}'.format(self.name))
+        path = 'sorting/Event/{}'.format(self.name)
+        if not os.path.exists(path):
+            os.mkdir(path)
         super(Event, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -88,7 +85,9 @@ class Classifier(models.Model):
     name = models.CharField(max_length=500, unique=True)
 
     def save(self, *args, **kwargs):
-        os.mkdir('sorting/Classifier/{}'.format(self.name))
+        path = 'sorting/Classifier/{}'.format(self.name)
+        if not os.path.exists(path):
+            os.mkdir(path)
         super(Classifier, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -150,7 +149,7 @@ def post_delete_file(sender, instance, *args, **kwargs):
     # TODO: REname deleted file in backups
     
     # show in backup file that the original has been deleted
-    os.rename(instance.backup.path, 'deleted_{}'.format(instance.backup.path))
+    # os.rename(instance.backup_path, 'deleted_{}'.format(instance.backup_path))
     
     # instance.document.delete(save=False)
     instance.small_thumb.delete(save=False)
