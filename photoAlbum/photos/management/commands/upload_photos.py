@@ -3,6 +3,7 @@ from django.core.files.images import ImageFile
 import os
 from photos import models, utils
 from django.db.utils import IntegrityError
+from django.db import transaction
 
 
 class Command(BaseCommand):
@@ -19,22 +20,23 @@ class Command(BaseCommand):
             print('\t{}'.format(path))
             return False
         try:
-            photo = models.Photo.objects.create(photo_hash=img_hash, owner=person,
-                                                device=device)
-            photo.document = ImageFile(open(path, 'rb'))
-            photo.document.name = ff
-            doc = photo.document
-            create_date = utils.get_DateTimeOriginal(path)
-            if create_date != '':
-                photo.create_date = create_date
-                photo.metadata = True
-            # create name with owner in it
-            name = '{}/{}'.format(str(person), doc.name)
-            photo.backup_path = utils.save_backup(name, path)
-            photo.small_thumb.save(name=doc.name, content=doc)
-            photo.medium_thumb.save(name=doc.name, content=doc)
-            photo.large_thumb.save(name=doc.name, content=doc)
-            photo.save()
+            with transaction.atomic():
+                photo = models.Photo.objects.create(photo_hash=img_hash, owner=person,
+                                                    device=device)
+                photo.document = ImageFile(open(path, 'rb'))
+                photo.document.name = ff
+                doc = photo.document
+                create_date = utils.get_DateTimeOriginal(path)
+                if create_date != '':
+                    photo.create_date = create_date
+                    photo.metadata = True
+                # create name with owner in it
+                name = '{}/{}'.format(str(person), doc.name)
+                photo.backup_path = utils.save_backup(name, path)
+                photo.small_thumb.save(name=doc.name, content=doc)
+                photo.medium_thumb.save(name=doc.name, content=doc)
+                photo.large_thumb.save(name=doc.name, content=doc)
+                photo.save()
         except IntegrityError:
             p = models.Photo.objects.get(photo_hash=img_hash)
             print('**FAILED: duplicates id {}'.format(p.id))
