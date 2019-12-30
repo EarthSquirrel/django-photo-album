@@ -1,4 +1,20 @@
 {
-"people": ["Peggy", "Britney", "Carman", "Barbara", "Ivan", "Erika", "Kyle", "Rachel", "Megan", "Katrina", "Soumilee"],
-"animals": ["Sampson", "Korra", "MB", "Pumpkin", "Kitty", "Gisela"]
+"people": ["Peggy", "Britney", "Carman", "Barbara", "Ivan",
+           "Erika", "Kyle (big)", "Rachel", "Megan", "Katrina", 
+           "Soumilee", "Kyle (little)", "Jessica", "Chandra",
+           "Domnick", "Bev", "Jimmy"],
+"animals": ["Sampson", "Korra", "MB", "Pumpkin", "Kitty", 
+            "Gisela", "Sassy", "Kittens"],
+"events": ["Christmas 2013", "Christmas 2014", "Christmas 2015",
+           "Christmas 2016", "Christmas 2017", "Christmas 2018",
+           "Christmas 2019", "Thanksgiving 2017", "New Years 2014-15",
+           "Fourth of July 2018", "Fourth of July 2019",
+           "Britney's 12th B-day (2007)", "Britney's 20th B-day (2015)",
+           "Barb's 59th B-day (2015)", "Barb's 61st B-day (2017)",
+           "Carman's 60th B-day (2014)", "Erika's B-day (2015)",
+           "Erika's B-day (2017)", 
+           "Jimmy visits 2016", "Bev visits 2016"
+          ],
+"classifiers": ["Animals"],
+"devices": ["Tablet", "Old Tablet", "Phone", "Camera", "Unknown"]
 }
