@@ -15,15 +15,21 @@ class AddAttributesView(FormView):
     template_name = 'photos/add_attributes_view.html'
 
     
+    def add_atribute(self, model, tag, atrs, photo):
+        if len(atrs) > 0:
+            for atr in atrs:
+                #atr = model.objects.get(id=i)
+                tag.objects.get_or_create(photo=photo, atr=atr)
+                
     def form_valid(self, form):
         photo_id = self.kwargs['photo_id']
         photo = models.Photo.objects.get(id=photo_id)
         data = form.cleaned_data
-        events = data['events']
-        if len(events) > 0:
-            for i in events:
-                models.EventTag.objects.get_or_create(photo=photo,
-                                                      atr=i)
+        keys = [['events', models.EventTag, models.Event], 
+                ['animals', models.AnimalTag, models.Animal]]
+        
+        for key in keys:
+            self.add_atribute(key[2], key[1], data[key[0]], photo)
         
         # import pdb; pdb.set_trace()
         return HttpResponseRedirect(reverse('photos:photo_details', 
@@ -120,7 +126,7 @@ class SearchResultsView(genViews.ListView):
         if len(self.request.GET) == 0:
             qs = orig
 
-        return qs
+        return qs.order_by('create_date')
 
 
 # TODO: Figure out how to  upload multiple images at a time
@@ -147,6 +153,9 @@ class MediumPhotoListView(genViews.ListView):
     context_object_name = 'photo_list'
     template_name = 'photos/medium_photo_list.html'
     paginate_by = 50
+
+    def get_queryset(self):
+        return models.Photo.objects.all().order_by('create_date')
 
 
 # ############### Autocompletes ####################

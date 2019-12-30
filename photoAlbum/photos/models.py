@@ -160,3 +160,8 @@ def post_delete_file(sender, instance, *args, **kwargs):
 class EventTag(models.Model):
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
     atr = models.ForeignKey(Event, on_delete=models.PROTECT)
+
+
+class AnimalTag(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    atr = models.ForeignKey(Animal, on_delete=models.PROTECT)
