@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Get the model directories
         mods = {
-            'Animal': models.Animal,
+            'Animal': [models.Animal, models.AnimalTag],
             #'Classifier': models.Classifier,
             'Event': [models.Event, models.EventTag]
             #'Location': models.Location,
