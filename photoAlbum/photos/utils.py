@@ -100,11 +100,12 @@ def get_html_attributes(photo, attributes=[]):
     at_dict = {
         'owner': photo.owner,
         'event': get_attribute(models.EventTag, photo),
+        'device': photo.device,
         'created': create_date,
         'uploaded': photo.upload_date,
     }
     if len(attributes) == 0:
-        attributes = ['owner', 'event', 'created', 'uploaded']
+        attributes = ['owner', 'event', 'device', 'created', 'uploaded']
     li = []
     for a in attributes:
         if at_dict[a] != '':
