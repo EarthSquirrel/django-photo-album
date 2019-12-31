@@ -26,7 +26,11 @@ class AddAttributesView(FormView):
         photo = models.Photo.objects.get(id=photo_id)
         data = form.cleaned_data
         keys = [['events', models.EventTag, models.Event], 
-                ['animals', models.AnimalTag, models.Animal]]
+                ['animals', models.AnimalTag, models.Animal],
+                ['location', models.LocationTag, models.Location],
+                ['people', models.PersonTag, models.Person],
+                ['classifiers', models.ClassifierTag, models.Classifier]
+               ]
         
         for key in keys:
             self.add_atribute(key[2], key[1], data[key[0]], photo)
@@ -95,36 +99,49 @@ class SearchResultsView(genViews.ListView):
     context_object_name = 'photo_list'
     template_name = 'photos/medium_photo_list.html'
     paginate_by = 50
+    
+    def search_mt(self, key, model, tag, qs):
+        try:
+            # Get list in specific search field
+            li = self.request.GET.getlist(key)
+            # check if length > 0, if not return
+            if not len(li) > 0:
+                return qs
+            # holdes all the photos with the tags in search
+            tag_pq = models.Photo.objects.none()
+            # 
+            for i in li:
+                # get photo from Model and ModelTag
+                m = model.objects.get(id=int(i))
+                t = tag.objects.filter(atr=m)
+                # for each tag model in list, add photo to a qs
+                for tt in t:
+                    tag_pq |= models.Photo.objects.filter(id=tt.photo.pk)
+            # union existing qs with tag qs to get new qs
+            qs = qs.intersection(tag_pq)
+        except MultiValueDictKeyError:
+            pass
+        return qs
 
     def get_queryset(self):
-        orig = models.Photo.objects.all()
-        qs = models.Photo.objects.none()
+        qs = models.Photo.objects.all()
         try:
             i = self.request.GET.getlist('owner')
-            for ii in i:
-                qs = qs | orig.filter(owner=ii)
+            if len(i) > 0:
+                oqs = models.Photo.objects.none()
+                for ii in i:
+                    oqs = oqs | qs.filter(owner=ii)
+                qs = qs.intersection(oqs)
         except MultiValueDictKeyError:
             pass        
-        
-        try:
-            i = self.request.GET.getlist('events')
-            # Start from empty photo qs
-            pq = models.Photo.objects.none()
-            for ii in i:
-                # get photo from Event and EventTag
-                e = models.Event.objects.get(id=int(ii))
-                et = models.EventTag.objects.filter(atr=e)
-                # add each photo to a qs
-                for t in et:
-                    pq |= models.Photo.objects.filter(id=t.photo.pk)
+        ModelTag = [['events', models.Event, models.EventTag],
+                    ['animals', models.Animal, models.AnimalTag]
+                   ]
 
-            # Union existing qs with events qs to get new qs
-            qs = qs.union(pq)
-        except MultiValueDictKeyError:
-            pass        
-        
-        if len(self.request.GET) == 0:
-            qs = orig
+        # key model tag qs
+        for mt in ModelTag:
+            qs = self.search_mt(mt[0], mt[1], mt[2], qs)
+
 
         return qs.order_by('create_date')
 

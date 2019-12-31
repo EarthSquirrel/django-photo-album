@@ -29,14 +29,23 @@ class AddAttributesForm(forms.Form):
     events = forms.ModelMultipleChoiceField(queryset=models.Event.objects.all(),
         required=False, widget=ac.ModelSelect2Multiple(url='/photos/event-ac/'))
 
+    classifiers = forms.ModelMultipleChoiceField(queryset=models.Classifier.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/classifier-ac/'))
+
 
 
 class SearchForm(forms.Form):
     owner = forms.ModelMultipleChoiceField(queryset=models.Person.objects.all(),
         required=False, widget=ac.ModelSelect2Multiple(url='/photos/person-ac/'))
 
+    device = forms.ModelMultipleChoiceField(queryset=models.Device.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/device-ac/'))
+    
     events = forms.ModelMultipleChoiceField(queryset=models.Event.objects.all(),
         required=False, widget=ac.ModelSelect2Multiple(url='/photos/event-ac/'))
+    
+    animals = forms.ModelMultipleChoiceField(queryset=models.Animal.objects.all(),
+        required=False, widget=ac.ModelSelect2Multiple(url='/photos/animal-ac/'))
 
 
 class FileFieldForm(forms.Form):

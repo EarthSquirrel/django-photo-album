@@ -165,3 +165,18 @@ class EventTag(models.Model):
 class AnimalTag(models.Model):
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
     atr = models.ForeignKey(Animal, on_delete=models.PROTECT)
+
+
+class LocationTag(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    atr = models.ForeignKey(Location, on_delete=models.PROTECT)
+
+
+class PersonTag(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    atr = models.ForeignKey(Person, on_delete=models.PROTECT)
+
+
+class ClassifierTag(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    atr = models.ForeignKey(Classifier, on_delete=models.PROTECT)

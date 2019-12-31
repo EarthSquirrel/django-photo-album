@@ -101,12 +101,16 @@ def get_html_attributes(photo, attributes=[]):
         'owner': photo.owner,
         'device': photo.device,
         'event': get_attribute(models.EventTag, photo),
+        'person': get_attribute(models.PersonTag, photo),
         'animal': get_attribute(models.AnimalTag, photo),
+        'location': get_attribute(models.LocationTag, photo),
+        'classifier': get_attribute(models.ClassifierTag, photo),
         'created': create_date,
         'uploaded': photo.upload_date,
     }
     if len(attributes) == 0:
-        attributes = ['owner', 'event', 'animal', 'created', 'device', 'uploaded']
+        attributes = ['owner', 'event', 'person', 'animal', 'location',
+                      'classifier', 'created', 'device', 'uploaded']
     li = []
     for a in attributes:
         if at_dict[a] != '':

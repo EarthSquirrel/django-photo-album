@@ -14,10 +14,10 @@ class Command(BaseCommand):
         # Get the model directories
         mods = {
             'Animal': [models.Animal, models.AnimalTag],
-            #'Classifier': models.Classifier,
-            'Event': [models.Event, models.EventTag]
-            #'Location': models.Location,
-            #'Person': models.Person
+            'Classifier': [models.Classifier, models.ClassifierTag],
+            'Event': [models.Event, models.EventTag],
+            'Location': [models.Location, models.LocationTag],
+            'Person': [models.Person, models.PersonTag]
         }
 
         for mod in list(mods.keys()):
